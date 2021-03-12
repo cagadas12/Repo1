@@ -12,6 +12,8 @@ const { Content } = Layout;
 class Main extends Component {
   state = {
     currentPosition: null,
+    query: '',
+    distance: '1',
   };
 
   componentDidMount() {
@@ -23,14 +25,18 @@ class Main extends Component {
       this.setState({ currentPosition });
     });
   }
-
+  
+  onInputChange(event) {
+    const stateKey = event.target.name;
+    this.setState({ [stateKey]: event.target.value});
+  }
 
   render() {
     return (
       <div className='main-layout'>
         <content className='content'>
           <Brand />
-          <Search />
+          <Search query={this.state.query} distance={this.state.distance}  onChange={(event) => this.onInputChange(event)}/>
           <div className='search-content'>
             <Map currentPosition={this.state.currentPosition} />
             <SearchResult />
