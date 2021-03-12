@@ -5,28 +5,23 @@ import './search.scss';
 
 const { Option } =Select;
 
-class Search extends Component {  
-   onFormSubmit(event) {
-      event.preventDefault();
-   }
+class Search extends Component {
     render() {     
       return (
          <div className='search-component'>
-            <form className='search-component-form' onSubmit={(event) => this.onFormSubmit(event)}>
+            <form className='search-component-form'>
                <div>
                   <Input 
                       name='query'
                       className='search'
                       size='large'
-                       placeholder='Search for (e.g Hardware)' 
-                       value={this.props.query}   
-                       onChange ={(event) => this.props.onChange(event)}                                    
+                       placeholder='Search for (e.g Hardware)'                      
                     />
               </div>
               <div>
                  <div className='search-option'>
                     <Input.Group compact>
-                       <Input name='distance' value={this.props.distance} />                                          
+                       <Input name='distance' />                                          
                         <Select defaultValue='Distance'>
                            <Option value='Distance'>Distance (km)</Option>
                            <Option value='Current location'>Current location</Option>
