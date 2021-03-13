@@ -57,7 +57,7 @@ class Main extends Component {
           <Brand />
           <Search query={this.state.query} distance={this.state.distance} onChange={(event) => this.onInputChange(event)} />
           <div className='search-content'>
-            <Map currentPosition={this.state.currentPosition} />
+            <Map currentPosition={this.state.currentPosition} distance={this.state.distance} />
             <SearchResult />
 
           </div>
