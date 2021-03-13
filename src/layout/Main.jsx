@@ -4,6 +4,8 @@ import Brand from '../features/brand/Brand';
 import Search from '../features/search/Search';
 import Map from '../features/map/Map';
 import SearchResult from '../features/search-result/SearchResult';
+import { getStores } from '../services/stores';
+import { haversineInKM } from '../utilities/math';
 
 import './main.scss';
 
@@ -11,6 +13,7 @@ const { Content } = Layout;
 
 class Main extends Component {
   state = {
+    stores: [],
     currentPosition: null,
     query: '',
     distance: '1',
@@ -23,6 +26,7 @@ class Main extends Component {
         lng: coords.longitude,
       };
       this.setState({ currentPosition });
+      this.getStores();
     });
   }
 
@@ -31,12 +35,27 @@ class Main extends Component {
     this.setState({ [stateKey]: event.target.value });
   }
 
+  async getStores() {
+    const { data} = await getStores();
+    const stores = this.mapStoreDistance(data);
+    this.setState({ stores });
+  }
+
+  mapStoreDistance(data = []) {
+    const stores = data.reduces((mappedStores, store) => {
+      const { lat,lng } = this.state.currentPosition;
+      const distance = haversineInKM(lat, lng, store.latitude, store.longitude);
+      return [ ...mappedStores, {  ...store, distance }];
+    }, []);
+    return stores;
+  }
+
   render() {
     return (
       <div className='main-layout'>
         <content className='content'>
           <Brand />
-          <Search query={this.state.query} distance={this.state.distance} onChange={(event) => this.onChange(event)} />
+          <Search query={this.state.query} distance={this.state.distance} onChange={(event) => this.onInputChange(event)} />
           <div className='search-content'>
             <Map currentPosition={this.state.currentPosition} />
             <SearchResult />
