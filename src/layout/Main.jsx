@@ -17,6 +17,11 @@ class Main extends Component {
     currentPosition: null,
     query: '',
     distance: '1',
+    searchQuery: {
+      distance: 1,
+      query: '',
+      stores: [],
+    },
   };
 
   componentDidMount() {
@@ -50,12 +55,36 @@ class Main extends Component {
     return stores;
   }
 
+  onSearch() {
+    const { distance, query, stores } =  this.state;
+      const filteredStores = this.filterStores({ distance, query, stores });
+      const searchQuery = { distance, query, stores: filteredStores };
+      this.setState({ searchQuery });
+  }
+
+  filterStore({ distance, query, stores }) {
+    const filterStores = stores.filter((stores) => {
+      const isStoreInRange = stores.distance <= parseInt(distance);
+      if (!query || !isStoreInRange) return isStoreInRange;
+      const isStoreQueried =
+        stores.name.toLowerCase().includes(query.toLowerCase()) ||
+        stores.tags.toLowerCase().includes(query.toLowerCase());
+      return isStoreInRange && isStoreQueried;
+    });
+    return filterStores;
+  }
+
   render() {
     return (
       <div className='main-layout'>
         <content className='content'>
           <Brand />
-          <Search query={this.state.query} distance={this.state.distance} onChange={(event) => this.onInputChange(event)} />
+          <Search 
+          query={this.state.query}
+           distance={this.state.distance} 
+           onChange={(event) => this.onInputChange(event)}
+           onSubmit={() => this.onSearch()} 
+          />
           <div className='search-content'>
             <Map currentPosition={this.state.currentPosition} distance={this.state.distance} />
             <SearchResult />
