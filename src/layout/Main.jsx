@@ -86,7 +86,11 @@ class Main extends Component {
            onSubmit={() => this.onSearch()} 
           />
           <div className='search-content'>
-            <Map currentPosition={this.state.currentPosition} distance={this.state.distance} />
+            <Map 
+              currentPosition={this.state.currentPosition} 
+              distance={this.state.distance}
+              stores={this.state.searchQuery.stores}
+            />
             <SearchResult />
 
           </div>
