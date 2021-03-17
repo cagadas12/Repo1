@@ -57,12 +57,12 @@ class Main extends Component {
 
   onSearch() {
     const { distance, query, stores } =  this.state;
-      const filteredStores = this.filterStores({ distance, query, stores });
-      const searchQuery = { distance, query, stores: filteredStores };
+      const filterStores = this.filterStores({ distance, query, stores });
+      const searchQuery = { distance, query, stores: filterStores };
       this.setState({ searchQuery });
   }
 
-  filterStore({ distance, query, stores }) {
+  filterStores({ distance, query, stores }) {
     const filterStores = stores.filter((stores) => {
       const isStoreInRange = stores.distance <= parseInt(distance);
       if (!query || !isStoreInRange) return isStoreInRange;
@@ -88,10 +88,10 @@ class Main extends Component {
           <div className='search-content'>
             <Map 
               currentPosition={this.state.currentPosition} 
-              distance={this.state.distance}
+              distance={this.state.searchQuery.distance}
               stores={this.state.searchQuery.stores}
             />
-            <SearchResult />
+            <SearchResult stores={this.state.searchQuery.stores} />
 
           </div>
         </content>

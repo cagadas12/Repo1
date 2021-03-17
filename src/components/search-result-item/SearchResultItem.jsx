@@ -4,17 +4,27 @@ import './search-result-item.scss';
 
 class SearchResultItem extends Component {
     render() {
+        const { result } = this.props;
+        const tagList = result.tags.split(',');
+        debugger;
         return (
             <div className='search-result-item'>
-               <div className='search-result__item'>
-                   <span>JJ's Chika-an</span>
-                   <span className='result-item__distance'> 2 KM </span>                                  
+               <div className='result_item__name'>
+                   <span>{result.name}</span>
+                   <span className='result-item__distance'> {result.distance.toFixed(2)} KM </span>                                  
                </div>
                <div className='result-item__description'>                   
-                   <span>Capt. Flordelis, Street, Hilongos, Leyte</span>
+                   <span>{result.address}</span>
                </div>
-               <div>                 
-                   <span className='tags'Restaurant></span>                 
+               <div>  
+                   {
+                       tagList && 
+                       tagList.map((tag, index) => (
+                       <span className='tags' key={index}>
+                           {tag}
+                       </span> 
+                    ))}               
+                   <span className='tags'>{result.tags}</span>                 
                </div>
             </div>
         );
